@@ -1,8 +1,10 @@
 import { Modal, Form, Button } from 'react-bootstrap';
 
 const AddBreakModal = ({ show, onClose, onSubmit, experience = {}, onInputChange }) => {
-  const handleChange = (e) => {
-    onInputChange(e);
+  
+  // Funzione per gestire i cambiamenti nei campi del modulo
+  const handleChange = (event) => {
+    onInputChange(event);
   };
 
   return (

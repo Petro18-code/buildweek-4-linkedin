@@ -19,6 +19,7 @@ const Experience = ({ userId, isCurrentUser }) => {
   });
   const [error, setError] = useState(null);
 
+
   useEffect(() => {
     const fetchExperiences = async () => {
       const url = `https://striveschool-api.herokuapp.com/api/profile/${userId}/experiences`;
@@ -34,13 +35,13 @@ const Experience = ({ userId, isCurrentUser }) => {
         });
 
         if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+          throw new Error(`Error ${response.status}: Unable to fetch experiences`);
         }
 
         const data = await response.json();
         setExperiences(data);
       } catch (error) {
-        setError('Error fetching experiences.');
+        setError('Whoops! Something went wrong while fetching experiences.');
         console.error('Error fetching experiences:', error);
       }
     };
@@ -48,7 +49,7 @@ const Experience = ({ userId, isCurrentUser }) => {
     fetchExperiences();
   }, [userId]);
 
-  const handleShowAddExperienceModal = () => {
+  const openAddExperienceModal = () => {
     setNewExperience({
       role: '',
       company: '',
@@ -60,9 +61,9 @@ const Experience = ({ userId, isCurrentUser }) => {
     setShowAddExperienceModal(true);
   };
 
-  const handleCloseAddExperienceModal = () => setShowAddExperienceModal(false);
+  const closeAddExperienceModal = () => setShowAddExperienceModal(false);
 
-  const handleShowEditExperienceModal = (experience) => {
+  const openEditExperienceModal = (experience) => {
     setCurrentExperience(experience);
     setNewExperience({
       role: experience.role,
@@ -75,12 +76,12 @@ const Experience = ({ userId, isCurrentUser }) => {
     setShowEditExperienceModal(true);
   };
 
-  const handleCloseEditExperienceModal = () => {
+  const closeEditExperienceModal = () => {
     setShowEditExperienceModal(false);
     setCurrentExperience(null);
   };
 
-  const handleAddExperienceSubmit = async () => {
+  const handleAddExperience = async () => {
     const url = `https://striveschool-api.herokuapp.com/api/profile/${userId}/experiences`;
     const token = process.env.REACT_APP_JWT_TOKEN;
 
@@ -95,19 +96,19 @@ const Experience = ({ userId, isCurrentUser }) => {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        throw new Error(`Error ${response.status}: Unable to add experience`);
       }
 
       const data = await response.json();
       setExperiences([...experiences, data]);
-      handleCloseAddExperienceModal();
+      closeAddExperienceModal();
     } catch (error) {
-      setError('Error adding experience.');
+      setError('Something went wrong while adding the experience.');
       console.error('Error adding experience:', error);
     }
   };
 
-  const handleEditExperienceSubmit = async () => {
+  const handleEditExperience = async () => {
     const url = `https://striveschool-api.herokuapp.com/api/profile/${userId}/experiences/${currentExperience._id}`;
     const token = process.env.REACT_APP_JWT_TOKEN;
 
@@ -122,14 +123,14 @@ const Experience = ({ userId, isCurrentUser }) => {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        throw new Error(`Error ${response.status}: Unable to update experience`);
       }
 
       const data = await response.json();
       setExperiences(experiences.map(exp => exp._id === data._id ? data : exp));
-      handleCloseEditExperienceModal();
+      closeEditExperienceModal();
     } catch (error) {
-      setError('Error updating experience.');
+      setError('Oops! There was an issue updating the experience.');
       console.error('Error updating experience:', error);
     }
   };
@@ -148,12 +149,12 @@ const Experience = ({ userId, isCurrentUser }) => {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        throw new Error(`Error ${response.status}: Unable to delete experience`);
       }
 
       setExperiences(experiences.filter(exp => exp._id !== id));
     } catch (error) {
-      setError('Error deleting experience.');
+      setError('Something went wrong while deleting the experience.');
       console.error('Error deleting experience:', error);
     }
   };
@@ -164,8 +165,8 @@ const Experience = ({ userId, isCurrentUser }) => {
       
       {isCurrentUser && (
         <div className="d-flex justify-content-between mb-3">
-          <Button variant="link" onClick={handleShowAddExperienceModal}>
-            <FaEdit /> Aggiungi Esperienza
+          <Button variant="link" onClick={openAddExperienceModal}>
+            <FaEdit /> Add Experience
           </Button>
         </div>
       )}
@@ -185,7 +186,7 @@ const Experience = ({ userId, isCurrentUser }) => {
                 <div>
                   <Button
                     variant="link"
-                    onClick={() => handleShowEditExperienceModal(exp)}
+                    onClick={() => openEditExperienceModal(exp)}
                   >
                     <FaEdit />
                   </Button>
@@ -206,8 +207,8 @@ const Experience = ({ userId, isCurrentUser }) => {
 
       <AddExperienceModal
         show={showAddExperienceModal}
-        onClose={handleCloseAddExperienceModal}
-        onSubmit={handleAddExperienceSubmit}
+        onClose={closeAddExperienceModal}
+        onSubmit={handleAddExperience}
         experience={newExperience}
         onInputChange={(e) => setNewExperience({ ...newExperience, [e.target.name]: e.target.value })}
       />
@@ -215,8 +216,8 @@ const Experience = ({ userId, isCurrentUser }) => {
       {currentExperience && (
         <EditExperienceModal
           show={showEditExperienceModal}
-          onClose={handleCloseEditExperienceModal}
-          onSubmit={handleEditExperienceSubmit}
+          onClose={closeEditExperienceModal}
+          onSubmit={handleEditExperience}
           experience={newExperience}
           onInputChange={(e) => setNewExperience({ ...newExperience, [e.target.name]: e.target.value })}
         />

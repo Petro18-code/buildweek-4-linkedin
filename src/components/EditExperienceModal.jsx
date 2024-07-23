@@ -1,8 +1,8 @@
 import { Modal, Form, Button } from 'react-bootstrap';
 
 const EditExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInputChange }) => {
-  
-  if (!experience) experience = {};
+
+  const safeExperience = experience || {};
 
   const handleChange = (e) => {
     onInputChange(e);
@@ -19,9 +19,9 @@ const EditExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInput
             <Form.Label>Ruolo</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Inserisci il ruolo"
+              placeholder="Es. Sviluppatore Front-End"
               name="role"
-              value={experience.role || ''}
+              value={safeExperience.role || ''}
               onChange={handleChange}
             />
           </Form.Group>
@@ -29,9 +29,9 @@ const EditExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInput
             <Form.Label>Azienda</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Inserisci l'azienda"
+              placeholder="Es. Google"
               name="company"
-              value={experience.company || ''}
+              value={safeExperience.company || ''}
               onChange={handleChange}
             />
           </Form.Group>
@@ -40,7 +40,7 @@ const EditExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInput
             <Form.Control
               type="date"
               name="startDate"
-              value={experience.startDate || ''}
+              value={safeExperience.startDate || ''}
               onChange={handleChange}
             />
           </Form.Group>
@@ -49,7 +49,7 @@ const EditExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInput
             <Form.Control
               type="date"
               name="endDate"
-              value={experience.endDate || ''}
+              value={safeExperience.endDate || ''}
               onChange={handleChange}
             />
           </Form.Group>
@@ -59,16 +59,16 @@ const EditExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInput
               as="textarea"
               rows={3}
               name="description"
-              value={experience.description || ''}
+              value={safeExperience.description || ''}
               onChange={handleChange}
             />
           </Form.Group>
           <Form.Group controlId="formArea">
-            <Form.Label>Area</Form.Label>
+            <Form.Label>Settore</Form.Label>
             <Form.Control
               type="text"
               name="area"
-              value={experience.area || ''}
+              value={safeExperience.area || ''}
               onChange={handleChange}
             />
           </Form.Group>
@@ -76,7 +76,7 @@ const EditExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInput
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onClose}>
-          Chiudi
+          Annulla
         </Button>
         <Button variant="primary" onClick={onSubmit}>
           Salva

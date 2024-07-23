@@ -16,22 +16,22 @@ const UserProfile = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchCurrentUserData = async () => {
+    const getUserData = async () => {
       try {
-        const data = await fetchCurrentUser();
-        setCurrentUserId(data._id);
-      
-        const profileData = await fetchUserProfile(userId || data._id); 
-        setProfile(profileData);
+        const currentUser = await fetchCurrentUser();
+        setCurrentUserId(currentUser._id);
+        
+        const userProfile = await fetchUserProfile(userId || currentUser._id);
+        setProfile(userProfile);
         setIsLoading(false);
-      } catch (error) {
-        console.error('Error fetching current user or profile:', error);
-        setError('Error fetching profile data. Please try again later.');
+      } catch (err) {
+        console.error('Failed to fetch user or profile:', err);
+        setError('Oops, something went wrong. Please try again later.');
         setIsLoading(false);
       }
     };
 
-    fetchCurrentUserData();
+    getUserData();
   }, [userId]);
 
   if (error) {
@@ -53,12 +53,12 @@ const UserProfile = () => {
   return (
     <Container className="user-profile-container mt-4" fluid>
       <Row>
-        <Col md={12}> {/* Colonna per il profilo utente */}
+        <Col md={12}>
           <Card className="user-profile-card mb-4">
             <Card.Header className="p-0 position-relative">
               <img
                 src="https://picsum.photos/640/480"
-                alt="Background header"
+                alt="Header background"
                 className="header-bg"
               />
               <img
@@ -94,7 +94,7 @@ const UserProfile = () => {
                     {isCurrentUser && (
                       <div className="verification-box ms-3">
                         <FaCheckCircle className="verification-icon" />
-                        <span className="verification-text">Verifica ora</span>
+                        <span className="verification-text">Verify Now</span>
                       </div>
                     )}
                   </div>
@@ -113,7 +113,6 @@ const UserProfile = () => {
             <Experience userId={userId} isCurrentUser={isCurrentUser} />
           </Col>
         </Col>
-  
       </Row>
     </Container>
   );

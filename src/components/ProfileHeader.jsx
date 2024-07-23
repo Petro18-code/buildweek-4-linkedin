@@ -30,38 +30,38 @@ const ProfileHeader = () => {
   const [editingExperience, setEditingExperience] = useState(null);
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
+    const loadUserProfile = async () => {
       try {
-        const data = await fetchCurrentUser();
-        setCurrentUserId(data._id);
+        const userData = await fetchCurrentUser();
+        setCurrentUserId(userData._id);
         setIsCurrentUser(true);
-        setProfile(data);
-        setIsLoading(false);
+        setProfile(userData);
       } catch (error) {
-        console.error('Error fetching profile data:', error);
-        setError('Error fetching profile data.');
+        console.error('Failed to fetch profile data:', error);
+        setError('Sorry, we couldn’t load your profile. Please try again later.');
+      } finally {
         setIsLoading(false);
       }
     };
 
-    fetchUserProfile();
+    loadUserProfile();
   }, []);
 
-  const handleAddExperienceClick = () => setShowAddExperienceModal(true);
-  const handleAddBreakClick = () => setShowAddBreakModal(true);
-  const handleEditExperienceClick = (experience) => {
+  const handleAddExperience = () => setShowAddExperienceModal(true);
+  const handleAddBreak = () => setShowAddBreakModal(true);
+  const handleEditExperience = (experience) => {
     setEditingExperience(experience);
     setShowEditExperienceModal(true);
   };
 
-  const handleCloseAddExperienceModal = () => setShowAddExperienceModal(false);
-  const handleCloseAddBreakModal = () => setShowAddBreakModal(false);
-  const handleCloseEditExperienceModal = () => {
+  const closeAddExperienceModal = () => setShowAddExperienceModal(false);
+  const closeAddBreakModal = () => setShowAddBreakModal(false);
+  const closeEditExperienceModal = () => {
     setEditingExperience(null);
     setShowEditExperienceModal(false);
   };
 
-  const handleAddExperienceSubmit = async () => {
+  const submitNewExperience = async () => {
     try {
       await addExperience(currentUserId, newExperience);
       setNewExperience({
@@ -73,14 +73,14 @@ const ProfileHeader = () => {
         area: '',
       });
       setShowAddExperienceModal(false);
-      window.location.reload();
+      window.location.reload(); // Refreshing to reflect new data
     } catch (error) {
-      console.error('Error adding experience:', error);
-      alert('Error adding experience. Please try again.');
+      console.error('Error adding new experience:', error);
+      alert('Oops! Something went wrong while adding your experience. Please try again.');
     }
   };
 
-  const handleAddBreakSubmit = async () => {
+  const submitBreakExperience = async () => {
     const breakExperience = {
       role: 'Break',
       company: 'N/A',
@@ -95,12 +95,12 @@ const ProfileHeader = () => {
       setShowAddBreakModal(false);
       window.location.reload();
     } catch (error) {
-      console.error('Error adding work break:', error);
-      alert('Error adding work break. Please try again.');
+      console.error('Error adding break:', error);
+      alert('Something went wrong while adding the break. Please try again.');
     }
   };
 
-  const handleEditExperienceSubmit = async (updatedExperience) => {
+  const submitEditExperience = async (updatedExperience) => {
     try {
       await updateExperience(currentUserId, updatedExperience._id, updatedExperience);
       setEditingExperience(null);
@@ -108,7 +108,7 @@ const ProfileHeader = () => {
       window.location.reload();
     } catch (error) {
       console.error('Error updating experience:', error);
-      alert('Error updating experience. Please try again.');
+      alert('Failed to update the experience. Please try again.');
     }
   };
 
@@ -143,12 +143,12 @@ const ProfileHeader = () => {
             <Card.Header className="p-0 position-relative">
               <img
                 src="https://picsum.photos/640/480"
-                alt="Background header"
+                alt="Profile background"
                 className="header-bg"
               />
               <img
                 src={profile.image || 'https://via.placeholder.com/150'}
-                alt={`${profile.name}'s profile`}
+                alt={`${profile.name}'s avatar`}
                 className="rounded-circle profile-avatar"
               />
               {isCurrentUser ? (
@@ -163,7 +163,7 @@ const ProfileHeader = () => {
                 <Button
                   variant="link"
                   className="position-absolute top-0 end-0 m-3"
-                  onClick={() => alert('Editing not allowed for other users')}
+                  onClick={() => alert('Editing is restricted to the profile owner.')}
                 >
                   <i className="bi bi-pencil-fill"></i>
                 </Button>
@@ -179,7 +179,7 @@ const ProfileHeader = () => {
                     {isCurrentUser && (
                       <div className="verification-box ms-3">
                         <FaCheckCircle className="verification-icon" />
-                        <span className="verification-text">Verifica ora</span>
+                        <span className="verification-text">Verify Now</span>
                       </div>
                     )}
                   </div>
@@ -198,7 +198,7 @@ const ProfileHeader = () => {
         <Col md={12} className="mt-4">
           <Card className="mb-4">
             <Card.Body className="d-flex flex-column">
-              <h5>Esperienze</h5>
+              <h5>Experience</h5>
               {isCurrentUser && (
                 <Dropdown>
                   <Dropdown.Toggle as={Button} variant="link">
@@ -206,16 +206,16 @@ const ProfileHeader = () => {
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>
-                    <Dropdown.Item onClick={handleAddExperienceClick}>
-                      <FaPencilAlt /> Aggiungi Posizione Lavorativa
+                    <Dropdown.Item onClick={handleAddExperience}>
+                      <FaPencilAlt /> Add Job Position
                     </Dropdown.Item>
-                    <Dropdown.Item onClick={handleAddBreakClick}>
-                      <FaPencilAlt /> Aggiungi Pausa Lavorativa
+                    <Dropdown.Item onClick={handleAddBreak}>
+                      <FaPencilAlt /> Add Work Break
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
               )}
-              <Experience userId={currentUserId} isCurrentUser={isCurrentUser} onEditClick={handleEditExperienceClick} />
+              <Experience userId={currentUserId} isCurrentUser={isCurrentUser} onEditClick={handleEditExperience} />
             </Card.Body>
           </Card>
         </Col>
@@ -223,24 +223,24 @@ const ProfileHeader = () => {
 
       <AddExperienceModal
         show={showAddExperienceModal}
-        onClose={handleCloseAddExperienceModal}
-        onSubmit={handleAddExperienceSubmit}
+        onClose={closeAddExperienceModal}
+        onSubmit={submitNewExperience}
         experience={newExperience}
         onInputChange={handleInputChange}
       />
 
       <AddBreakModal
         show={showAddBreakModal}
-        onClose={handleCloseAddBreakModal}
-        onSubmit={handleAddBreakSubmit}
+        onClose={closeAddBreakModal}
+        onSubmit={submitBreakExperience}
         experience={newExperience}
         onInputChange={handleInputChange}
       />
 
       <EditExperienceModal
         show={showEditExperienceModal}
-        onClose={handleCloseEditExperienceModal}
-        onSubmit={handleEditExperienceSubmit}
+        onClose={closeEditExperienceModal}
+        onSubmit={submitEditExperience}
         experience={editingExperience}
         onInputChange={handleInputChange}
       />

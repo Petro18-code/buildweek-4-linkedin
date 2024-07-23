@@ -1,7 +1,7 @@
-
 import { Modal, Form, Button } from 'react-bootstrap';
 
 const AddExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInputChange }) => {
+ 
   const handleChange = (e) => {
     onInputChange(e);
   };
@@ -9,7 +9,7 @@ const AddExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInputC
   return (
     <Modal show={show} onHide={onClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Aggiungi Esperienza</Modal.Title>
+        <Modal.Title>Aggiungi Nuova Esperienza</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
@@ -17,7 +17,7 @@ const AddExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInputC
             <Form.Label>Ruolo</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Inserisci il ruolo"
+              placeholder="Es. Sviluppatore Front-End"
               name="role"
               value={experience.role || ''}
               onChange={handleChange}
@@ -27,7 +27,7 @@ const AddExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInputC
             <Form.Label>Azienda</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Inserisci l'azienda"
+              placeholder="Es. Google"
               name="company"
               value={experience.company || ''}
               onChange={handleChange}
@@ -62,7 +62,7 @@ const AddExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInputC
             />
           </Form.Group>
           <Form.Group controlId="formArea">
-            <Form.Label>Area</Form.Label>
+            <Form.Label>Settore</Form.Label>
             <Form.Control
               type="text"
               name="area"
@@ -74,10 +74,10 @@ const AddExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInputC
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onClose}>
-          Chiudi
+          Annulla
         </Button>
         <Button variant="primary" onClick={onSubmit}>
-          Salva
+          Aggiungi
         </Button>
       </Modal.Footer>
     </Modal>
