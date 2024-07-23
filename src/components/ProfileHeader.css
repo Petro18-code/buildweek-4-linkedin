@@ -1,0 +1,79 @@
+
+.user-profile-container {
+    max-width: 800px;
+    margin: auto;
+  }
+  
+  .user-profile-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .user-profile-header {
+    position: relative;
+    height: 200px; 
+  }
+  
+  .header-bg {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .main-avatar {
+    position: absolute;
+    top: 85%;
+    left: 20px;
+    transform: translateY(-50%);
+  }
+  
+  .main-avatar img {
+    width: 150px;
+    height: 150px;
+    border: 5px solid white;
+    object-fit: cover;
+  }
+  
+  .actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  
+  .user-profile-body {
+    padding: 20px;
+  }
+  
+  .profile-name {
+    font-size: 1.5rem;
+    margin: 0;
+  }
+  
+  .verification-box {
+    border: 1px dashed blue;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .verification-icon {
+    color: green;
+  }
+  
+  .verification-text {
+    margin-left: 5px;
+  }
+  
+  .profile-details {
+    margin-top: 10px;
+  }
+  
+  .profile-bio-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    background-color: #f9f9f9;
+  }
+  
