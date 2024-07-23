@@ -100,9 +100,9 @@ const ProfileHeader = () => {
     }
   };
 
-  const handleEditExperienceSubmit = async () => {
+  const handleEditExperienceSubmit = async (updatedExperience) => {
     try {
-      await updateExperience(currentUserId, editingExperience._id, editingExperience);
+      await updateExperience(currentUserId, updatedExperience._id, updatedExperience);
       setEditingExperience(null);
       setShowEditExperienceModal(false);
       window.location.reload();
@@ -115,9 +115,9 @@ const ProfileHeader = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (editingExperience) {
-      setEditingExperience({ ...editingExperience, [name]: value });
+      setEditingExperience(prev => ({ ...prev, [name]: value }));
     } else {
-      setNewExperience({ ...newExperience, [name]: value });
+      setNewExperience(prev => ({ ...prev, [name]: value }));
     }
   };
 
@@ -244,6 +244,7 @@ const ProfileHeader = () => {
         experience={editingExperience}
         onInputChange={handleInputChange}
       />
+     
     </Container>
   );
 }

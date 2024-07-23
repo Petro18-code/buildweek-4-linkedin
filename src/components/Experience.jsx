@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { Button, ListGroup } from 'react-bootstrap';
 import { FaTrash, FaEdit } from 'react-icons/fa';
 import AddExperienceModal from './AddExperienceModal'; 
@@ -206,19 +206,19 @@ const Experience = ({ userId, isCurrentUser }) => {
 
       <AddExperienceModal
         show={showAddExperienceModal}
-        handleClose={handleCloseAddExperienceModal}
-        handleAddExperienceSubmit={handleAddExperienceSubmit}
-        newExperience={newExperience}
-        handleInputChange={(e) => setNewExperience({ ...newExperience, [e.target.name]: e.target.value })}
+        onClose={handleCloseAddExperienceModal}
+        onSubmit={handleAddExperienceSubmit}
+        experience={newExperience}
+        onInputChange={(e) => setNewExperience({ ...newExperience, [e.target.name]: e.target.value })}
       />
 
       {currentExperience && (
         <EditExperienceModal
           show={showEditExperienceModal}
-          handleClose={handleCloseEditExperienceModal}
-          handleEditExperienceSubmit={handleEditExperienceSubmit}
-          editingExperience={newExperience}
-          handleInputChange={(e) => setNewExperience({ ...newExperience, [e.target.name]: e.target.value })}
+          onClose={handleCloseEditExperienceModal}
+          onSubmit={handleEditExperienceSubmit}
+          experience={newExperience}
+          onInputChange={(e) => setNewExperience({ ...newExperience, [e.target.name]: e.target.value })}
         />
       )}
     </>
