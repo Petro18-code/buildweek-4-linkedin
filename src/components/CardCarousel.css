@@ -1,0 +1,16 @@
+.card-carousel .carousel-item {
+    padding: 0; 
+  }
+  
+  .carousel-card-container {
+    display: flex;
+    flex-wrap: nowrap; 
+    overflow-x: auto; 
+    gap: 1rem; 
+    padding: 0.5rem;
+  }
+  
+  .carousel-card {
+    flex: 1 0 30%; 
+    
+  }

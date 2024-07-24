@@ -7,7 +7,7 @@ import Sidebar from './components/SideBar';
 import { fetchCurrentUser } from './api/api'; 
 import { useState, useEffect } from 'react';
 import './App.css';
-
+import EditExperiencePage from './components/EditExperiencePage';
 function App() {
   const [currentUserId, setCurrentUserId] = useState(null);
 
@@ -34,6 +34,8 @@ function App() {
               <Routes>
                 <Route path="/" element={<ProfileHeader />} />
                 <Route path="/profile/:userId" element={<UserProfile />} />
+                <Route path="/edit-experience/:userId" element={<EditExperiencePage />} />
+
               </Routes>
             </Col>
             <Col md={4}>

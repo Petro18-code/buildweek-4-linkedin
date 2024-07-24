@@ -16,22 +16,24 @@ const UserProfile = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getUserData = async () => {
+    const loadProfileData = async () => {
       try {
+       
         const currentUser = await fetchCurrentUser();
         setCurrentUserId(currentUser._id);
         
+     
         const userProfile = await fetchUserProfile(userId || currentUser._id);
         setProfile(userProfile);
-        setIsLoading(false);
       } catch (err) {
-        console.error('Failed to fetch user or profile:', err);
-        setError('Oops, something went wrong. Please try again later.');
+        console.error('C’è stato un problema nel recuperare i dati:', err);
+        setError('Ops, qualcosa è andato storto. Riprova più tardi.');
+      } finally {
         setIsLoading(false);
       }
     };
 
-    getUserData();
+    loadProfileData();
   }, [userId]);
 
   if (error) {
@@ -42,7 +44,7 @@ const UserProfile = () => {
     return (
       <Container className="text-center mt-5">
         <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
+          <span className="visually-hidden">Caricamento...</span>
         </Spinner>
       </Container>
     );
@@ -58,7 +60,7 @@ const UserProfile = () => {
             <Card.Header className="p-0 position-relative">
               <img
                 src="https://picsum.photos/640/480"
-                alt="Header background"
+                alt="Sfondo profilo"
                 className="header-bg"
               />
               <img
@@ -66,23 +68,6 @@ const UserProfile = () => {
                 alt={`${profile.name}'s profile`}
                 className="rounded-circle profile-avatar"
               />
-              {isCurrentUser ? (
-                <Button
-                  variant="link"
-                  className="position-absolute top-0 end-0 m-3"
-                  onClick={() => navigate('/profile-header')} 
-                >
-                  <i className="bi bi-pencil-fill"></i>
-                </Button>
-              ) : (
-                <Button
-                  variant="link"
-                  className="position-absolute top-0 end-0 m-3"
-                  onClick={() => alert('Editing not allowed for other users')}
-                >
-                  <i className="bi bi-pencil-fill"></i>
-                </Button>
-              )}
             </Card.Header>
             <Card.Body>
               <Row>
@@ -92,9 +77,9 @@ const UserProfile = () => {
                       {profile.name} {profile.surname}
                     </h2>
                     {isCurrentUser && (
-                      <div className="verification-box ms-3">
+                      <div className="verification-box mt-4">
                         <FaCheckCircle className="verification-icon" />
-                        <span className="verification-text">Verify Now</span>
+                        <span className="verification-text">Verifica ora</span>
                       </div>
                     )}
                   </div>

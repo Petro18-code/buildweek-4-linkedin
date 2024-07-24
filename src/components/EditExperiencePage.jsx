@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button, ListGroup } from 'react-bootstrap';
 import { FaTrash, FaEdit } from 'react-icons/fa';
-import AddExperienceModal from './AddExperienceModal';
 import EditExperienceModal from './EditExperienceModal';
+import AddExperienceModal from './AddExperienceModal';
 
-const Experience = ({ userId, isCurrentUser }) => {
+const EditExperiencePage = () => {
+  const { userId } = useParams();
+  const navigate = useNavigate();
   const [experiences, setExperiences] = useState([]);
   const [showAddExperienceModal, setShowAddExperienceModal] = useState(false);
   const [showEditExperienceModal, setShowEditExperienceModal] = useState(false);
@@ -40,12 +43,16 @@ const Experience = ({ userId, isCurrentUser }) => {
         const data = await response.json();
         setExperiences(data);
       } catch (error) {
-        setError('Oops! Qualcosa è andato storto nel recuperare le esperienze.');
+        setError('Oops! C\'è stato un problema nel recuperare le esperienze.');
         console.error('Errore nel recupero delle esperienze:', error);
       }
     };
 
-    fetchExperiences();
+    if (userId) {
+      fetchExperiences();
+    } else {
+      console.error('ID utente mancante');
+    }
   }, [userId]);
 
   const openAddExperienceModal = () => {
@@ -102,12 +109,14 @@ const Experience = ({ userId, isCurrentUser }) => {
       setExperiences([...experiences, data]);
       closeAddExperienceModal();
     } catch (error) {
-      setError('Ops! Qualcosa è andato storto mentre aggiungevi l\'esperienza.');
+      setError('Qualcosa è andato storto mentre aggiungevi l\'esperienza.');
       console.error('Errore nell\'aggiunta dell\'esperienza:', error);
     }
   };
 
   const handleEditExperience = async () => {
+    if (!currentExperience) return;
+
     const url = `https://striveschool-api.herokuapp.com/api/profile/${userId}/experiences/${currentExperience._id}`;
     const token = process.env.REACT_APP_JWT_TOKEN;
 
@@ -153,15 +162,16 @@ const Experience = ({ userId, isCurrentUser }) => {
 
       setExperiences(experiences.filter(exp => exp._id !== id));
     } catch (error) {
-      setError('Oops! Qualcosa è andato storto mentre eliminavi l\'esperienza.');
+      setError('Qualcosa è andato storto mentre eliminavi l\'esperienza.');
       console.error('Errore nella cancellazione dell\'esperienza:', error);
     }
   };
 
   return (
-    <>
+    <div>
+      <h2>Esperienze</h2>
       {error && <p className="text-danger">{error}</p>}
-
+      <Button onClick={openAddExperienceModal}>Aggiungi Esperienza</Button>
       <ListGroup className="mt-3">
         {experiences.length > 0 ? (
           experiences.map(exp => (
@@ -173,22 +183,20 @@ const Experience = ({ userId, isCurrentUser }) => {
                 <p>{exp.description}</p>
                 <p>{exp.area}</p>
               </div>
-              {isCurrentUser && (
-                <div>
-                  <Button
-                    variant="link"
-                    onClick={() => openEditExperienceModal(exp)}
-                  >
-                    <FaEdit />
-                  </Button>
-                  <Button
-                    variant="link"
-                    onClick={() => handleDeleteExperience(exp._id)}
-                  >
-                    <FaTrash />
-                  </Button>
-                </div>
-              )}
+              <div>
+                <Button
+                  variant="link"
+                  onClick={() => openEditExperienceModal(exp)}
+                >
+                  <FaEdit />
+                </Button>
+                <Button
+                  variant="link"
+                  onClick={() => handleDeleteExperience(exp._id)}
+                >
+                  <FaTrash />
+                </Button>
+              </div>
             </ListGroup.Item>
           ))
         ) : (
@@ -213,8 +221,8 @@ const Experience = ({ userId, isCurrentUser }) => {
           onInputChange={(e) => setNewExperience({ ...newExperience, [e.target.name]: e.target.value })}
         />
       )}
-    </>
+    </div>
   );
 };
 
-export default Experience;
+export default EditExperiencePage;
