@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Button, ListGroup } from 'react-bootstrap';
 import { FaTrash, FaEdit } from 'react-icons/fa';
-import AddExperienceModal from './AddExperienceModal'; 
-import EditExperienceModal from './EditExperienceModal'; 
+import AddExperienceModal from './AddExperienceModal';
+import EditExperienceModal from './EditExperienceModal';
+
 
 const Experience = ({ userId, isCurrentUser }) => {
   const [experiences, setExperiences] = useState([]);
@@ -49,6 +50,7 @@ const Experience = ({ userId, isCurrentUser }) => {
     fetchExperiences();
   }, [userId]);
 
+
   const openAddExperienceModal = () => {
     setNewExperience({
       role: '',
@@ -61,6 +63,7 @@ const Experience = ({ userId, isCurrentUser }) => {
     setShowAddExperienceModal(true);
   };
 
+ 
   const closeAddExperienceModal = () => setShowAddExperienceModal(false);
 
   const openEditExperienceModal = (experience) => {
@@ -75,6 +78,7 @@ const Experience = ({ userId, isCurrentUser }) => {
     });
     setShowEditExperienceModal(true);
   };
+
 
   const closeEditExperienceModal = () => {
     setShowEditExperienceModal(false);
@@ -162,14 +166,6 @@ const Experience = ({ userId, isCurrentUser }) => {
   return (
     <>
       {error && <p className="text-danger">{error}</p>}
-      
-      {isCurrentUser && (
-        <div className="d-flex justify-content-between mb-3">
-          <Button variant="link" onClick={openAddExperienceModal}>
-            <FaEdit /> Add Experience
-          </Button>
-        </div>
-      )}
 
       <ListGroup className="mt-3">
         {experiences.length > 0 ? (
@@ -201,7 +197,7 @@ const Experience = ({ userId, isCurrentUser }) => {
             </ListGroup.Item>
           ))
         ) : (
-          <ListGroup.Item>No experiences available.</ListGroup.Item>
+         ""
         )}
       </ListGroup>
 
