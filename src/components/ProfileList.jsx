@@ -4,7 +4,7 @@ import { ListGroup, Button } from 'react-bootstrap';
 import './ProfileList.css';
 import { fetchProfiles } from '../api/api';
 import ProfileModal from './ProfileModal';
-
+import { FaUserPlus } from 'react-icons/fa';
 const ProfileList = ({ excludeUserId, currentUser }) => {
   const [profiles, setProfiles] = useState([]);
   const [error, setError] = useState(null);
@@ -47,29 +47,34 @@ const ProfileList = ({ excludeUserId, currentUser }) => {
 
   return (
     <div>
-      <h2>Persone che potresti conoscere</h2>
-      <ListGroup className="profile-list">
-        {displayedProfiles.map(profile => (
-          <ListGroup.Item key={profile._id}>
-            <Link to={`/profile/${profile._id}`} className="profile-link">
-              <img
-                src={profile.image || 'https://via.placeholder.com/50'}
-                alt={`${profile.name}'s profile`}
-                className="profile-thumbnail"
-              />
-              <span>{profile.name} {profile.surname}</span>
-            </Link>
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
-      <Button variant="primary" onClick={handleShowModal}>
-       Mostra tutto
-      </Button>
+    <h2>Persone che potresti conoscere</h2>
+    <ListGroup className="profile-list">
+      {displayedProfiles.map(profile => (
+        <ListGroup.Item key={profile._id} className="profile-item">
+          <Link to={`/profile/${profile._id}`} className="profile-link">
+            <img
+              src={profile.image || 'https://via.placeholder.com/50'}
+              alt={`${profile.name}'s profile`}
+              className="profile-thumbnail"
+            />
+            <div className="profile-info">
+              <span className="profile-name small">{profile.name} {profile.surname}</span>
+              <span className="profile-title">{profile.title}</span>
+              <Button variant='button' className="border-1 border-black rounded-5">
+                <FaUserPlus /> Collegati
+              </Button>
+            </div>
+          </Link>
+        </ListGroup.Item>
+      ))}
+    </ListGroup>
+    <Button variant="primary" onClick={handleShowModal}>
+      Mostra tutto
+    </Button>
 
-     
-      <ProfileModal show={showModal} onClose={handleCloseModal} profiles={profiles} currentUser={currentUser} />
-    </div>
-  );
+    <ProfileModal show={showModal} onClose={handleCloseModal} profiles={profiles} currentUser={currentUser} />
+  </div>
+);
 };
 
 export default ProfileList;

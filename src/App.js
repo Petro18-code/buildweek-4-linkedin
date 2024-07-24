@@ -30,15 +30,15 @@ function App() {
         <Container>
           <MyNavBar />
           <Row>
-            <Col md={8}>
+            <Col xs={12} md={8} lg={9}>
               <Routes>
                 <Route path="/" element={<ProfileHeader />} />
                 <Route path="/profile/:userId" element={<UserProfile />} />
                 <Route path="/edit-experience/:userId" element={<EditExperiencePage />} />
-
+                
               </Routes>
             </Col>
-            <Col md={4}>
+            <Col xs={12} md={4} lg={3}>
               <Sidebar currentUserId={currentUserId} />
             </Col>
           </Row>
