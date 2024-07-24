@@ -4,8 +4,8 @@ import { FaSearch, FaHome, FaUserFriends, FaBriefcase, FaCommentDots, FaBell, Fa
 
 const MyNavBar = () => {
   return (
-    <nav className="navbar">
-      <div className="navbar__container">
+    <nav className="navbar border-0 mb-3">
+      <div className="navbar__container border-bottom">
         <div className="navbar__left">
           <FaLinkedin className="navbar__linkedinIcon" />
           <div className="navbar__search">
