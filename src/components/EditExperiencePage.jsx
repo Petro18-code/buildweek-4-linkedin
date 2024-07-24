@@ -4,7 +4,8 @@ import { Button, ListGroup } from 'react-bootstrap';
 import { FaTrash, FaEdit } from 'react-icons/fa';
 import EditExperienceModal from './EditExperienceModal';
 import AddExperienceModal from './AddExperienceModal';
-
+import CalculateDuration from './CalculateDuration';
+import formatDateSafe from './FormatDateSafe';
 const EditExperiencePage = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
@@ -171,18 +172,20 @@ const EditExperiencePage = () => {
     <div>
       <h2>Esperienze</h2>
       {error && <p className="text-danger">{error}</p>}
-      <Button onClick={openAddExperienceModal}>Aggiungi Esperienza</Button>
+      
       <ListGroup className="mt-3">
         {experiences.length > 0 ? (
           experiences.map(exp => (
             <ListGroup.Item key={exp._id} className="d-flex justify-content-between align-items-center">
               <div>
-                <h5>{exp.role}</h5>
-                <p>{exp.company}</p>
-                <p>{exp.startDate} - {exp.endDate}</p>
-                <p>{exp.description}</p>
-                <p>{exp.area}</p>
-              </div>
+              
+      <h5>{exp.role}</h5>
+      <p>{exp.company}</p>
+      <p> {formatDateSafe(exp.startDate)}-{formatDateSafe(exp.endDate)}•{CalculateDuration(exp.startDate, exp.endDate)}</p>
+      <p>{exp.description}</p>
+      <p>{exp.area}</p>
+    </div>
+             
               <div>
                 <Button
                   variant="link"

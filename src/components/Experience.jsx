@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Button, ListGroup } from 'react-bootstrap';
 import { FaTrash, FaEdit } from 'react-icons/fa';
+import CalculateDuration from './CalculateDuration';
 import AddExperienceModal from './AddExperienceModal';
 import EditExperienceModal from './EditExperienceModal';
+import formatDateSafe from './FormatDateSafe';
 
 const Experience = ({ userId, isCurrentUser }) => {
   const [experiences, setExperiences] = useState([]);
@@ -18,7 +20,7 @@ const Experience = ({ userId, isCurrentUser }) => {
     area: ''
   });
   const [error, setError] = useState(null);
-
+ 
   useEffect(() => {
     const fetchExperiences = async () => {
       const url = `https://striveschool-api.herokuapp.com/api/profile/${userId}/experiences`;
@@ -47,6 +49,8 @@ const Experience = ({ userId, isCurrentUser }) => {
 
     fetchExperiences();
   }, [userId]);
+
+
 
   const openAddExperienceModal = () => {
     setNewExperience({
@@ -166,13 +170,13 @@ const Experience = ({ userId, isCurrentUser }) => {
         {experiences.length > 0 ? (
           experiences.map(exp => (
             <ListGroup.Item key={exp._id} className="d-flex justify-content-between align-items-center">
-              <div>
-                <h5>{exp.role}</h5>
-                <p>{exp.company}</p>
-                <p>{exp.startDate} - {exp.endDate}</p>
-                <p>{exp.description}</p>
-                <p>{exp.area}</p>
-              </div>
+               <div>
+      <h5>{exp.role}</h5>
+      <p>{exp.company}</p>
+      <p> {formatDateSafe(exp.startDate)}-{formatDateSafe(exp.endDate)}•{CalculateDuration(exp.startDate, exp.endDate)}</p>
+      <p>{exp.description}</p>
+      <p>{exp.area}</p>
+    </div>
               {isCurrentUser && (
                 <div>
                   <Button
