@@ -142,7 +142,7 @@ const ProfileHeader = () => {
   return (
     <Container className="user-profile-container mt-4">
       <Row>
-        <Col xs={12}>
+        <Col md={12}>
           <Card className="user-profile-card mb-4">
             <Card.Header className="p-0 position-relative">
               <img
