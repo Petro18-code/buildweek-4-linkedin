@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 import ProfileHeader from './components/ProfileHeader';
@@ -9,6 +10,8 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import EditExperiencePage from './components/EditExperiencePage';
 import MyFooter from './components/MyFooter';
+import Profile from './components/Profile/Profile';
+
 
 function App() {
   const [currentUserId, setCurrentUserId] = useState(null);
@@ -37,6 +40,15 @@ function App() {
                 <Route path="/" element={<ProfileHeader />} />
                 <Route path="/profile/:userId" element={<UserProfile />} />
                 <Route path="/edit-experience/:userId" element={<EditExperiencePage />} />
+                {/* <Route
+            path='/profile/:id'
+            element={
+              <Profile
+                userProfile={userProfile}
+                setUserProfile={setUserProfile}
+              />
+            }
+          /> */}
               </Routes>
             </Col>
             <Col xs={12} md={4} lg={3}>
@@ -51,3 +63,4 @@ function App() {
 }
 
 export default App;
+

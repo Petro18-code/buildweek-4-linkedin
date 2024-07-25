@@ -1,0 +1,14 @@
+.title__activity {
+  margin-top: 25px;
+  display: flex;
+  justify-content: start;
+  margin-left: 15px;
+  margin-right: 13px;
+}
+.about {
+  display: flex;
+  justify-content: start;
+  margin-left: 12px;
+  margin-right: 10px;
+  margin-bottom: 30px;
+}
