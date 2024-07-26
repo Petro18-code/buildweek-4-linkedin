@@ -1,7 +1,7 @@
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
-import ProfileHeader from './components/ProfileHeader';
+import ProfileHeader from './components/NewProfile/ProfileHeader';
 import MyNavBar from './components/MyNavBar';
 import UserProfile from './components/UserProfile';
 import Sidebar from './components/SideBar';
@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import EditExperiencePage from './components/EditExperiencePage';
 import MyFooter from './components/MyFooter';
-import Profile from './components/Profile/Profile';
+import Profile from './components/NewProfile/Profile';
 
 
 function App() {
@@ -37,7 +37,7 @@ function App() {
           <Row>
             <Col xs={12} md={8} lg={9}>
               <Routes>
-                <Route path="/" element={<ProfileHeader />} />
+                <Route path="/" element={<Profile />} />
                 <Route path="/profile/:userId" element={<UserProfile />} />
                 <Route path="/edit-experience/:userId" element={<EditExperiencePage />} />
                 {/* <Route

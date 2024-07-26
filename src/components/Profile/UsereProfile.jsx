@@ -1,5 +1,5 @@
 import { Container, Col, Card, Image, Row, Button } from "react-bootstrap";
-import "./Profile.css";
+
 import "./ProfileEditingModal.css";
 import ProfileEditForm from "./ProfileEditingForm";
 const UsereProfile = ({ userProfile }) => {

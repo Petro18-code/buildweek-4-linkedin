@@ -1,6 +1,6 @@
 import { Card } from "react-bootstrap";
 import { PencilFill, PlusLg } from "react-bootstrap-icons";
-import "./Skills.css";
+
 
 const Courses = () => {
   return (
@@ -15,13 +15,15 @@ const Courses = () => {
             </span>
           </div>
 
-          <Card.Text className="mt-3 mb-0">
+          {/* Usa div invece di Card.Text per evitare l'annidamento di <p> */}
+          <div className="mt-3 mb-0">
             <p>English School</p>
             <p>Coding Bootcamp</p>
-          </Card.Text>
+          </div>
         </Card.Body>
       </Card>
     </>
   );
 };
+
 export default Courses;

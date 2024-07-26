@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button, ListGroup } from 'react-bootstrap';
-import { FaTrash, FaEdit } from 'react-icons/fa';
+import { Button, ListGroup, Card } from 'react-bootstrap';
+import { FaTrash, FaEdit, FaPlus, FaArrowLeft } from 'react-icons/fa'; 
 import EditExperienceModal from './EditExperienceModal';
 import AddExperienceModal from './AddExperienceModal';
 import CalculateDuration from './CalculateDuration';
 import formatDateSafe from './FormatDateSafe';
+
 const EditExperiencePage = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
@@ -168,47 +169,67 @@ const EditExperiencePage = () => {
     }
   };
 
+ 
+  const handleGoBack = () => {
+    navigate(-1); 
+  };
+
   return (
     <div className="container mt-4">
-      <h2>Esperienze</h2>
-      {error && <p className="text-danger">{error}</p>}
-      
-      <ListGroup className="mt-3">
-        {experiences.length > 0 ? (
-          experiences.map(exp => (
-            <ListGroup.Item 
-              key={exp._id} 
-              className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3"
-            >
-              <div className="mb-3 mb-md-0">
-                <h5>{exp.role}</h5>
-                <p>{exp.company}</p>
-                <p>{formatDateSafe(exp.startDate)} - {formatDateSafe(exp.endDate)} • {CalculateDuration(exp.startDate, exp.endDate)}</p>
-                <p>{exp.description}</p>
-                <p>{exp.area}</p>
-              </div>
-              
-              <div className="d-flex">
-                <Button
-                  variant="link"
-                  className="me-2"
-                  onClick={() => openEditExperienceModal(exp)}
+      <Card>
+        <Card.Body>
+          <div className="d-flex justify-content-between align-items-center">
+            <div className="d-flex align-items-center">
+              <Button variant="link" onClick={handleGoBack} className="me-3">
+                <FaArrowLeft /> 
+              </Button>
+              <h2>Esperienze</h2>
+            </div>
+            <Button variant="primary" onClick={openAddExperienceModal}>
+              <FaPlus /> 
+            </Button>
+          </div>
+
+          {error && <p className="text-danger">{error}</p>}
+          
+          <ListGroup className="mt-3">
+            {experiences.length > 0 ? (
+              experiences.map(exp => (
+                <ListGroup.Item 
+                  key={exp._id} 
+                  className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3"
                 >
-                  <FaEdit />
-                </Button>
-                <Button
-                  variant="link"
-                  onClick={() => handleDeleteExperience(exp._id)}
-                >
-                  <FaTrash />
-                </Button>
-              </div>
-            </ListGroup.Item>
-          ))
-        ) : (
-          <p>Nessuna esperienza trovata.</p>
-        )}
-      </ListGroup>
+                  <div className="mb-3 mb-md-0">
+                    <h5>{exp.role}</h5>
+                    <p>{exp.company}</p>
+                    <p>{formatDateSafe(exp.startDate)} - {formatDateSafe(exp.endDate)} • {CalculateDuration(exp.startDate, exp.endDate)}</p>
+                    <p>{exp.description}</p>
+                    <p>{exp.area}</p>
+                  </div>
+                  
+                  <div className="d-flex align-items-center">
+                    <Button
+                      variant="link"
+                      className="me-2"
+                      onClick={() => openEditExperienceModal(exp)}
+                    >
+                      <FaEdit /> 
+                    </Button>
+                    <Button
+                      variant="link"
+                      onClick={() => handleDeleteExperience(exp._id)}
+                    >
+                      <FaTrash /> 
+                    </Button>
+                  </div>
+                </ListGroup.Item>
+              ))
+            ) : (
+              <p>Nessuna esperienza trovata.</p>
+            )}
+          </ListGroup>
+        </Card.Body>
+      </Card>
 
       <AddExperienceModal
         show={showAddExperienceModal}
@@ -230,6 +251,5 @@ const EditExperiencePage = () => {
     </div>
   );
 };
-
 
 export default EditExperiencePage;

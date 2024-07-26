@@ -177,22 +177,7 @@ const Experience = ({ userId, isCurrentUser }) => {
       <p>{exp.description}</p>
       <p>{exp.area}</p>
     </div>
-              {isCurrentUser && (
-                <div>
-                  <Button
-                    variant="link"
-                    onClick={() => openEditExperienceModal(exp)}
-                  >
-                    <FaEdit />
-                  </Button>
-                  <Button
-                    variant="link"
-                    onClick={() => handleDeleteExperience(exp._id)}
-                  >
-                    <FaTrash />
-                  </Button>
-                </div>
-              )}
+              
             </ListGroup.Item>
           ))
         ) : (

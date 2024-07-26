@@ -10,30 +10,17 @@ const Skills = () => {
   };
 
   const ArrowDown = () => <i className="bi bi-chevron-compact-down ml-1"></i>;
-  const ArrowUp = () => <i class="bi bi-chevron-compact-up ml-1"></i>;
+  const ArrowUp = () => <i className="bi bi-chevron-compact-up ml-1"></i>;
   const skillsList = [
-    { 
-      name: "JavaScript"
-    },
-    {
-      name: "React JS",
-    },
-    {
-      name: "Redux",
-    },
-    {
-      name: "TypeScript",
-    },
-    {
-      name: "HTML",
-    },
-    {
-      name: "CSS",
-    },
-    {
-      name: "Angular",
-    },
+    { name: "JavaScript" },
+    { name: "React JS" },
+    { name: "Redux" },
+    { name: "TypeScript" },
+    { name: "HTML" },
+    { name: "CSS" },
+    { name: "Angular" },
   ];
+
   return (
     <>
       <Card id="skills" className="mb-2">
@@ -49,18 +36,18 @@ const Skills = () => {
             </span>
           </div>
 
-          <Card.Text className="mt-3 mb-0">
+          <div className="mt-3 mb-0">
             {skillsList.slice(0, 3).map((user, i) => (
               <p key={i}>{user.name}</p>
             ))}
             {contentToShow && (
-              <Card.Text className="mt-3 mb-0">
+              <div className="mt-3 mb-0">
                 {skillsList.slice(3, 8).map((user, i) => (
                   <p key={i}>{user.name}</p>
                 ))}
-              </Card.Text>
+              </div>
             )}
-          </Card.Text>
+          </div>
 
           <Card.Footer className="text-center d-flex justify-content-center">
             <Button
@@ -70,11 +57,11 @@ const Skills = () => {
               {contentToShow ? `Riduci` : "Mostra tutte le competenze"}{" "}
               {contentToShow ? ArrowUp() : ArrowDown()}
             </Button>
-
           </Card.Footer>
         </Card.Body>
       </Card>
     </>
   );
 };
+
 export default Skills;

@@ -2,14 +2,15 @@ import { useEffect, useState } from 'react';
 import { Container, Row, Col, Card, Spinner, Alert, Button, Dropdown } from 'react-bootstrap';
 import { FaCheckCircle, FaPlus, FaPencilAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom'; 
-import ProfileDetails from './ProfileDetails';
-import Experience from './Experience';
-import AddExperienceModal from './AddExperienceModal';
-import AddBreakModal from './AddBreakModal';
-import EditExperienceModal from './EditExperienceModal';
-import { fetchCurrentUser, addExperience, updateExperience } from '../api/api'; 
+import ProfileDetails from '../ProfileDetails';
+import Experience from '../Experience';
+import AddExperienceModal from '../AddExperienceModal';
+import AddBreakModal from '../AddBreakModal';
+import EditExperienceModal from '../EditExperienceModal';
+import { fetchCurrentUser, addExperience, updateExperience, uploadProfileImage, fetchUserProfile } from '../../api/api'; 
 import './ProfileHeader.css';
-import CardCarousel from './CardCarousel';
+import CardCarousel from '../CardCarousel';
+import EditProfileModal from './EditProfileModal';
 
 const ProfileHeader = () => {
   const [profile, setProfile] = useState(null);
@@ -17,10 +18,11 @@ const ProfileHeader = () => {
   const [error, setError] = useState(null);
   const [currentUserId, setCurrentUserId] = useState(null);
   const [isCurrentUser, setIsCurrentUser] = useState(false);
-
+  
   const [showAddExperienceModal, setShowAddExperienceModal] = useState(false);
   const [showAddBreakModal, setShowAddBreakModal] = useState(false);
   const [showEditExperienceModal, setShowEditExperienceModal] = useState(false);
+  const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const [newExperience, setNewExperience] = useState({
     role: '',
     company: '',
@@ -31,15 +33,21 @@ const ProfileHeader = () => {
   });
   const [editingExperience, setEditingExperience] = useState(null);
 
+  const [profileImage, setProfileImage] = useState(null);
+  const [showImageUpload, setShowImageUpload] = useState(false);
+
   const navigate = useNavigate(); 
 
   useEffect(() => {
     const loadUserProfile = async () => {
+      setIsLoading(true);
       try {
-        const userData = await fetchCurrentUser();
-        setCurrentUserId(userData._id);
+        const currentUser = await fetchCurrentUser();
+        setCurrentUserId(currentUser._id);
         setIsCurrentUser(true);
-        setProfile(userData);
+
+        const userProfile = await fetchUserProfile(currentUser._id);
+        setProfile(userProfile);
       } catch (error) {
         console.error('C’è stato un problema nel caricare i dati del profilo:', error);
         setError('Ops! Non siamo riusciti a caricare il tuo profilo. Riprova più tardi.');
@@ -50,6 +58,30 @@ const ProfileHeader = () => {
 
     loadUserProfile();
   }, []);
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setProfileImage(file);
+    }
+  };
+
+  const handleUploadImage = async () => {
+    if (profileImage) {
+      try {
+        await uploadProfileImage(currentUserId, profileImage);
+        const updatedProfile = await fetchUserProfile(currentUserId);
+        setProfile(updatedProfile);
+        setProfileImage(null);
+        setShowImageUpload(false);
+      } catch (error) {
+        console.error('Errore nel caricamento dell\'immagine:', error);
+        alert('Ops! Qualcosa è andato storto durante il caricamento dell\'immagine.');
+      }
+    }
+  };
+
+  const handleImageUploadClick = () => setShowImageUpload(true);
 
   const handleAddExperience = () => setShowAddExperienceModal(true);
   const handleAddBreak = () => setShowAddBreakModal(true);
@@ -77,7 +109,6 @@ const ProfileHeader = () => {
         area: '',
       });
       setShowAddExperienceModal(false);
-      window.location.reload(); 
     } catch (error) {
       console.error('Errore nell\'aggiungere una nuova esperienza:', error);
       alert('Ops! Qualcosa è andato storto mentre aggiungevi la tua esperienza. Riprova.');
@@ -97,7 +128,6 @@ const ProfileHeader = () => {
     try {
       await addExperience(currentUserId, breakExperience);
       setShowAddBreakModal(false);
-      window.location.reload(); 
     } catch (error) {
       console.error('Errore nell\'aggiungere una pausa:', error);
       alert('Ops! C’è stato un problema nell\'aggiungere la pausa. Riprova.');
@@ -109,7 +139,6 @@ const ProfileHeader = () => {
       await updateExperience(currentUserId, updatedExperience._id, updatedExperience);
       setEditingExperience(null);
       setShowEditExperienceModal(false);
-      window.location.reload(); 
     } catch (error) {
       console.error('Errore nell\'aggiornare l\'esperienza:', error);
       alert('Oops! Non siamo riusciti ad aggiornare l\'esperienza. Riprova.');
@@ -155,17 +184,17 @@ const ProfileHeader = () => {
                 alt={`${profile.name}'s avatar`}
                 className="rounded-circle profile-avatar"
               />
+              {isCurrentUser && (
+                <Button
+                  variant="link"
+                  className="position-absolute top-0 end-0 mt-2 me-2"
+                  onClick={() => setShowEditProfileModal(true)}
+                >
+                  <FaPencilAlt />
+                </Button>
+              )}
             </Card.Header>
             <Card.Body className="position-relative pt-0">
-              <Row>
-                <Col md={12} className="d-flex justify-content-end">
-                  <Button
-                    variant="button"
-                  >
-                    <FaPencilAlt />
-                  </Button>
-                </Col>
-              </Row>
               <Row>
                 <Col md={12} className="d-flex flex-column">
                   <div className="profile-name-container">
@@ -210,19 +239,19 @@ const ProfileHeader = () => {
             </Card.Body>
           </Card>
         </Col>
-        <Col md={12}>{profile.bio && <ProfileDetails profileBio={profile.bio} />}</Col>
+        <Col md={12}>
+          {profile.bio && <ProfileDetails profileBio={profile.bio} />}
+        </Col>
         <Col md={12} className="mt-4">
           <Card className="mb-4">
             <Card.Body className="d-flex flex-column">
               <div className="d-flex align-items-center justify-content-between">
                 <h5>Esperienza</h5>
-
                 <div className="d-flex">
                   <Dropdown className="me-2">
                     <Dropdown.Toggle as={Button} variant="link">
                       <FaPlus />
                     </Dropdown.Toggle>
-
                     <Dropdown.Menu>
                       <Dropdown.Item onClick={handleAddExperience}>
                         <FaPencilAlt /> Aggiungi Posizione Lavorativa
@@ -250,6 +279,26 @@ const ProfileHeader = () => {
         </Col>
       </Row>
 
+      <EditProfileModal
+        show={showEditProfileModal}
+        handleClose={() => setShowEditProfileModal(false)}
+        profileToEdit={profile}
+        handleInput={(field, value) => setProfile(prev => ({ ...prev, [field]: value }))}
+        handleEducation={(showEducation) => setProfile(prev => ({ ...prev, showEducation }))}
+        showEducation={profile.showEducation || false}
+        setFormData={(file) => setProfileImage(file)}
+        handleSubmit={async () => {
+          if (profileImage) {
+            await uploadProfileImage(currentUserId, profileImage);
+            const updatedProfile = await fetchUserProfile(currentUserId);
+            setProfile(updatedProfile);
+            setProfileImage(null);
+          }
+          setShowEditProfileModal(false);
+        }}
+        uploadProfileImage={handleUploadImage}
+      />
+
       <AddExperienceModal
         show={showAddExperienceModal}
         onClose={closeAddExperienceModal}
@@ -273,6 +322,7 @@ const ProfileHeader = () => {
         experience={editingExperience}
         onInputChange={handleInputChange}
       />
+      
     </Container>
   );
 };

@@ -6,7 +6,6 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { PlusLg } from 'react-bootstrap-icons';
 import { IoSend } from 'react-icons/io5';
-
 import SingleExperience from './SingleExperience';
 
 const Experiences = () => {
@@ -46,7 +45,6 @@ const Experiences = () => {
       );
       if (response.ok) {
         const data = await response.json();
-
         setExperience(data);
         alert('Comment was sent!');
       } else {
@@ -70,7 +68,6 @@ const Experiences = () => {
           },
         }
       );
-      console.log(response);
       if (response.ok) {
         const experiences = await response.json();
         return experiences;
@@ -94,9 +91,6 @@ const Experiences = () => {
 
   useEffect(() => {
     getExperiencesById();
-    return () => {
-      // Cleanup logic (if any)
-    };
   }, []);
 
   return (
@@ -112,7 +106,6 @@ const Experiences = () => {
           <div className='d-flex mr-auto' style={{ marginLeft: '35em' }}>
             <PlusLg
               size={26}
-              id=''
               className='mt-4 mr-4'
               onClick={showAddExperience}
             />
@@ -129,20 +122,16 @@ const Experiences = () => {
             endDate,
             description,
           }) => (
-            <>
-              <div className=''>
-                <SingleExperience
-                  key={id}
-                  company={company}
-                  id={id}
-                  role={role}
-                  area={area}
-                  description={description}
-                  startDate={startDate}
-                  endDate={endDate}
-                />
-              </div>
-            </>
+            <SingleExperience
+              key={id} // Added key here
+              company={company}
+              id={id}
+              role={role}
+              area={area}
+              description={description}
+              startDate={startDate}
+              endDate={endDate}
+            />
           )
         )}
       </Card>
@@ -251,4 +240,5 @@ const Experiences = () => {
     </>
   );
 };
+
 export default Experiences;

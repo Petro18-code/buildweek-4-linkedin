@@ -10,11 +10,11 @@ const Interests = () => {
             <Card.Title>Interessi</Card.Title>
           </div>
 
-          <Card.Text className="d-flex flex-row mt-3 mb-0">
+          <div className="d-flex flex-row mt-3 mb-0">
             <p className="mr-3">Aziende</p>
             <p>Scuola</p>
-          </Card.Text>
-          <div className="d-flex flex-row  mt-2 border-bottom">
+          </div>
+          <div className="d-flex flex-row mt-2 border-bottom">
             <div className="d-flex flex-row mr-5">
               <Image
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjLZu_hYhHfytqB5EAVhhh2RBgOXPdeGnXdQIeczjBdg&s=10"
@@ -22,7 +22,7 @@ const Interests = () => {
               />
               <span className="pl-3 d-flex flex-column justify-content-center">
                 <h6 className="mb-0">Microsoft</h6>
-                <p>4,851 followers</p>
+                <span>4,851 followers</span>
               </span>
             </div>
             <div className="d-flex flex-row ml-5">
@@ -32,13 +32,13 @@ const Interests = () => {
               />
               <span className="pl-3 d-flex flex-column justify-content-center">
                 <h6 className="mb-0">Strive School</h6>
-                <p>2,242 followers</p>
+                <span>2,242 followers</span>
               </span>
             </div>
           </div>
         </Card.Body>
         <Card.Footer className="text-center">
-          <p className="mb-0">Mostra tutte le aziende (68)</p>
+          <span className="mb-0">Mostra tutte le aziende (68)</span>
         </Card.Footer>
       </Card>
     </>

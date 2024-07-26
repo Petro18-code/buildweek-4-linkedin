@@ -93,7 +93,7 @@ const Activity = () => {
           </div>
         </div>
         <Card.Footer
-          fluid
+          
           className='d-flex justify-content-center'
           style={{ backgroundColor: 'transparent' }}
         >

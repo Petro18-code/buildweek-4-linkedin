@@ -3,6 +3,7 @@ const TOKEN = process.env.REACT_APP_JWT_TOKEN;
 
 const fetchData = async (url, options) => {
   try {
+   
     const response = await fetch(url, options);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -96,5 +97,22 @@ export const fetchExperiences = async (userId) => {
       'Content-Type': 'application/json',
     },
   };
+  return fetchData(url, options);
+};
+export const uploadProfileImage = async (userId, imageFile) => {
+  const url = `${BASE_URL}/${userId}/picture`; 
+  const formData = new FormData();
+  formData.append('profile', imageFile); 
+
+  const options = {
+    method: 'POST',
+    body: formData,
+    headers: {
+      Authorization: `Bearer ${TOKEN}`,
+      
+    },
+    body: formData,
+  };
+
   return fetchData(url, options);
 };
