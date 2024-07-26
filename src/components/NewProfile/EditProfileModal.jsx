@@ -1,4 +1,3 @@
-import React from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { PlusLg } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
