@@ -88,8 +88,4 @@ const MyNavBar = () => {
   );
 };
 
-<<<<<<< HEAD
 export default MyNavBar;
-=======
-export default MyNavBar;
->>>>>>> origin/modifichegenerali

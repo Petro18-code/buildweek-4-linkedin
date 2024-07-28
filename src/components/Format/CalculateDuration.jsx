@@ -6,8 +6,5 @@ const calculateDuration = (startDate, endDate) => {
   return `${diffInMonths} mesi`;
 };
 
-<<<<<<< HEAD
+
 export default calculateDuration;
-=======
-export default calculateDuration;
->>>>>>> origin/modifichegenerali

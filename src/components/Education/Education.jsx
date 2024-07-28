@@ -72,9 +72,5 @@ const Education = () => {
   </Card>
   );
 };
-  
-<<<<<<< HEAD
 export default Education;
-=======
-export default Education;
->>>>>>> origin/modifichegenerali
+

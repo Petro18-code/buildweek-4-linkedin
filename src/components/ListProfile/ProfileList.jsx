@@ -93,9 +93,4 @@ const ProfileList = ({ excludeUserId, currentUser }) => {
   );
 };
 
-
-<<<<<<< HEAD
 export default ProfileList;
-=======
-export default ProfileList;
->>>>>>> origin/modifichegenerali

@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-import React from 'react';
-=======
->>>>>>> origin/modifichegenerali
 import './MyFooter.css';
 import { Container, Row, Col } from 'react-bootstrap';
 const MyFooter = () => {
@@ -61,8 +57,4 @@ const MyFooter = () => {
     );
   }
     
-<<<<<<< HEAD
 export default MyFooter;
-=======
-export default MyFooter;
->>>>>>> origin/modifichegenerali
