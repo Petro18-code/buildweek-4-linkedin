@@ -179,7 +179,7 @@ const ProfileHeader = ({ userId: propUserId }) => {
           <img
             src="https://picsum.photos/640/480"
             alt="Profilo di sfondo"
-            className="header-bg w-100"
+            className="header-bg "
           />
           <div className="avatar-container">
             <img
@@ -203,7 +203,7 @@ const ProfileHeader = ({ userId: propUserId }) => {
           <Row>
             <Col xs={12} md={8}>
               <div className="user__detail">
-                <div className="user-detail-main">
+                <div className="user-detail-main mt-5">
                   <h4 className="name mb-0">
                     {profile.name} {profile.surname}
                   </h4>

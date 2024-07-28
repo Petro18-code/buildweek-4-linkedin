@@ -19,14 +19,15 @@ body {
 
 .header-bg {
   width: 100%;
- 
+  height: 200px; 
   object-fit: cover;
   position: relative;
 }
 
+
 .profile-avatar {
   position: absolute;
-  top: -110px!important; 
+  top: 115px!important; 
   left: 20px;
   width: 150px;
   height: 150px;
@@ -37,6 +38,7 @@ body {
 }
 
 .profile-name-container {
+
   display: flex;
   align-items: center;
   flex-wrap: wrap;
