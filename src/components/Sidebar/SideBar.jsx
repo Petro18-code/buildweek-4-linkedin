@@ -11,4 +11,8 @@ const Sidebar = ({ currentUserId }) => {
   );
 };
 
+<<<<<<< HEAD
 export default Sidebar;
+=======
+export default Sidebar;
+>>>>>>> origin/modifichegenerali

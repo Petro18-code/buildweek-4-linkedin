@@ -5,4 +5,8 @@ const FormatDateSafe = (date) => {
 };
 
 
+<<<<<<< HEAD
 export default FormatDateSafe;
+=======
+export default FormatDateSafe;
+>>>>>>> origin/modifichegenerali

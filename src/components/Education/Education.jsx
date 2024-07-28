@@ -73,4 +73,8 @@ const Education = () => {
   );
 };
   
+<<<<<<< HEAD
 export default Education;
+=======
+export default Education;
+>>>>>>> origin/modifichegenerali
