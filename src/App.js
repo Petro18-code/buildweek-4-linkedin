@@ -1,17 +1,15 @@
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
-import ProfileHeader from './components/NewProfile/ProfileHeader';
-import MyNavBar from './components/MyNavBar';
-import UserProfile from './components/UserProfile';
-import Sidebar from './components/SideBar';
+import MyNavBar from './components/Navbar/MyNavBar';
+import Sidebar from './components/Sidebar/SideBar';
 import { fetchCurrentUser } from './api/api';
 import { useState, useEffect } from 'react';
 import './App.css';
-import EditExperiencePage from './components/EditExperiencePage';
-import MyFooter from './components/MyFooter';
+import EditExperiencePage from './components/Experience/EditExperiencePage';
+import MyFooter from './components/Footer/MyFooter';
 import Profile from './components/NewProfile/Profile';
-
+import NotFound from './components/NotFound';
 
 function App() {
   const [currentUserId, setCurrentUserId] = useState(null);
@@ -31,36 +29,30 @@ function App() {
 
   return (
     <Router>
-      <div className="App">
-        <Container>
-          <MyNavBar />
-          <Row>
-            <Col xs={12} md={8} lg={9}>
-              <Routes>
-                <Route path="/" element={<Profile />} />
-                <Route path="/profile/:userId" element={<UserProfile />} />
-                <Route path="/edit-experience/:userId" element={<EditExperiencePage />} />
-                {/* <Route
-            path='/profile/:id'
-            element={
-              <Profile
-                userProfile={userProfile}
-                setUserProfile={setUserProfile}
-              />
-            }
-          /> */}
-              </Routes>
-            </Col>
-            <Col xs={12} md={4} lg={3}>
-              <Sidebar currentUserId={currentUserId} />
-            </Col>
-          </Row>
-        </Container>
-        <MyFooter /> 
-      </div>
-    </Router>
-  );
+    <MyNavBar />
+
+    <div className="mt-5 pt-3">
+      <Container className="" >
+        <Row>
+          <Col xs={12} md={9} lg={9}>
+            <Routes>
+              <Route path="/" element={<Profile />} />
+              <Route path="/profile/:userId" element={<Profile />} />
+              <Route path="/edit-experience/:userId" element={<EditExperiencePage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Col>
+          <Col xs={12} md={3} lg={3} className="mt-4" >
+            <Sidebar currentUserId={currentUserId} />
+          </Col>
+        </Row>
+      </Container>
+    </div>
+    <MyFooter />
+  </Router>
+);
 }
 
+  
+  
 export default App;
-

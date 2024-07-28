@@ -1,0 +1,189 @@
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  height: 56px;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000; 
+  border-bottom: 1px solid #ddd;
+  box-sizing: border-box;
+  padding: 0 15px;
+  transition: all 0.3s ease-in-out;
+}
+
+.navbar__container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 18px;
+  height: 100%;
+}
+
+
+.navbar__left {
+  display: flex;
+  align-items: center;
+
+}
+
+
+.navbar__linkedinIcon {
+  color: #0077b5;
+  font-size: 35px;
+ 
+}
+
+
+.navbar__search {
+  display: flex;
+  align-items: center;
+  background-color: #eef3f8;
+  padding: 5px;
+  border-radius: 5px;
+  margin-left: 0;
+  transition: width 0.3s ease-in-out;
+}
+
+.navbar__search input {
+  border: none;
+  background: none;
+  outline: none;
+  padding: 5px;
+  margin-left: 5px;
+  width: 250px;
+  transition: width 0.3s ease-in-out;
+}
+
+.navbar__searchInput {
+  max-width: 100%;
+}
+
+
+.navbar__center {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-grow: 1;
+  transition: flex-grow 0.3s ease-in-out;
+}
+
+
+.navbar__option,
+.navbar__optionText {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px;
+  color: #666666;
+  cursor: pointer;
+  transition: color 0.3s;
+  line-height: 1;
+}
+
+.navbar__option span,
+.navbar__optionText span {
+  font-size: 14px;
+  margin-top: 3px;
+}
+
+.navbar__option:hover,
+.navbar__optionText:hover {
+  color: #000000;
+}
+
+.navbar__icon {
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+
+.navbar__divider {
+  border-left: 1px solid #ddd;
+  height: 40px;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+
+
+@media (max-width: 576px) {
+  .navbar__container {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 10px;
+  }
+  
+  .navbar__center {
+    display: none;
+  }
+
+  .navbar__search {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .navbar__search input {
+    width: 100%;
+  }
+
+  .navbar__optionText {
+    display: none;
+  }
+
+  .navbar__linkedinIcon {
+    font-size: 30px;
+  }
+}
+
+@media (min-width: 577px) and (max-width: 767px) {
+  .navbar__container {
+    padding: 0 10px;
+  }
+
+  .navbar__search {
+    max-width: 80%;
+  }
+
+  .navbar__icon {
+    font-size: 18px;
+  }
+
+  .navbar__option {
+    margin: 0 8px;
+  }
+}
+
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .navbar__icon {
+    font-size: 18px;
+  }
+
+  .navbar__option {
+    margin: 0 8px;
+  }
+
+  .navbar__search {
+    max-width: 50%;
+  }
+}
+
+
+@media (min-width: 992px) {
+  .navbar__icon {
+    font-size: 20px;
+  }
+
+  .navbar__option {
+    margin: 0 12px;
+  }
+
+  .navbar__search {
+    max-width: 350px;
+  }
+}

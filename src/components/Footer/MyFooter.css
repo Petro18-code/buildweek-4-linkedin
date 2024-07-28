@@ -1,0 +1,46 @@
+
+.footer-column {
+    margin-bottom: 20px;
+  }
+  
+  .footer-column a {
+    color: #666;
+    text-decoration: none;
+    display: block;
+    padding: 5px 0;
+    transition: color 0.3s ease;
+  }
+  
+  .footer-column a:hover {
+    color: #0073b1;
+  }
+  
+  .footer-language {
+    width: 100%;
+  }
+  
+  .footer-language .form-select {
+    width: 100%; 
+    max-width: 100%; 
+    box-sizing: border-box; 
+  }
+  
+  @media (max-width: 768px) {
+    .footer-language {
+      text-align: left; 
+    }
+  
+    .footer-language label {
+      font-size: 0.9em; 
+    }
+  }
+  
+  
+  .footer-bottom {
+    padding-top: 20px;
+  }
+  
+  .footer-bottom p {
+    color: #666;
+  }
+  

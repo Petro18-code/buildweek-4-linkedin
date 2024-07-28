@@ -1,0 +1,35 @@
+.prev {
+    background-color: #f0f0f0!important; 
+    border: none;            
+    border-radius: 50%;       
+            
+    display: flex;           
+    align-items: center;      
+    justify-content: center;  
+    padding: 0;               
+    transition: background-color 0.3s ease; 
+  }
+  
+  .prev:hover {
+    background-color: #e0e0e08c!important; 
+  }
+  
+  .arrow-icon {
+    font-size: 16px;          
+    color: #333;              
+  }
+  
+.hover {
+    background-color: transparent; 
+    border: none; 
+    transition: background-color 0.3s ease, border-radius 0.3s ease; 
+  }
+
+  .hover:hover {
+    background-color:   #f0f0f0!important;
+    border-radius: 50%; 
+    width: 50px;              
+    height: 50px;   
+  }
+  
+ 

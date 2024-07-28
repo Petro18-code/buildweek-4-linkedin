@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Button, ListGroup } from 'react-bootstrap';
-import { FaTrash, FaEdit } from 'react-icons/fa';
-import CalculateDuration from './CalculateDuration';
-import AddExperienceModal from './AddExperienceModal';
-import EditExperienceModal from './EditExperienceModal';
-import formatDateSafe from './FormatDateSafe';
-
+import { ListGroup } from 'react-bootstrap';
+import CalculateDuration from '../Format/CalculateDuration';
+import AddExperienceModal from '../Modali/AddExperienceModal';
+import formatDateSafe from '../Format/FormatDateSafe';
+import './Experience.css';
 const Experience = ({ userId, isCurrentUser }) => {
   const [experiences, setExperiences] = useState([]);
   const [showAddExperienceModal, setShowAddExperienceModal] = useState(false);
@@ -111,79 +109,33 @@ const Experience = ({ userId, isCurrentUser }) => {
     }
   };
 
-  const handleEditExperience = async () => {
-    const url = `https://striveschool-api.herokuapp.com/api/profile/${userId}/experiences/${currentExperience._id}`;
-    const token = process.env.REACT_APP_JWT_TOKEN;
+  
 
-    try {
-      const response = await fetch(url, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newExperience),
-      });
 
-      if (!response.ok) {
-        throw new Error(`Error ${response.status}: Unable to update experience`);
-      }
-
-      const data = await response.json();
-      setExperiences(experiences.map(exp => exp._id === data._id ? data : exp));
-      closeEditExperienceModal();
-    } catch (error) {
-      setError('Oops! C\'è stato un problema nell\'aggiornamento dell\'esperienza.');
-      console.error('Errore nell\'aggiornamento dell\'esperienza:', error);
-    }
-  };
-
-  const handleDeleteExperience = async (id) => {
-    const url = `https://striveschool-api.herokuapp.com/api/profile/${userId}/experiences/${id}`;
-    const token = process.env.REACT_APP_JWT_TOKEN;
-
-    try {
-      const response = await fetch(url, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Error ${response.status}: Unable to delete experience`);
-      }
-
-      setExperiences(experiences.filter(exp => exp._id !== id));
-    } catch (error) {
-      setError('Oops! Qualcosa è andato storto mentre eliminavi l\'esperienza.');
-      console.error('Errore nella cancellazione dell\'esperienza:', error);
-    }
-  };
 
   return (
-    <>
-      {error && <p className="text-danger">{error}</p>}
-
-      <ListGroup className="mt-3">
-        {experiences.length > 0 ? (
-          experiences.map(exp => (
-            <ListGroup.Item key={exp._id} className="d-flex justify-content-between align-items-center">
-               <div>
-      <h5>{exp.role}</h5>
-      <p>{exp.company}</p>
-      <p> {formatDateSafe(exp.startDate)}-{formatDateSafe(exp.endDate)}•{CalculateDuration(exp.startDate, exp.endDate)}</p>
-      <p>{exp.description}</p>
-      <p>{exp.area}</p>
-    </div>
-              
-            </ListGroup.Item>
-          ))
-        ) : (
-          <p>Nessuna esperienza trovata.</p>
-        )}
-      </ListGroup>
+  <>
+  {error && <p className="text-danger">{error}</p>}
+  
+  <ListGroup className="mt-3">
+    {experiences.length > 0 ? (
+      experiences.map(exp => (
+        <ListGroup.Item key={exp._id} className="d-flex flex-column align-items-start">
+          <div className="experience-item">
+            <h5 className="role">{exp.role}</h5>
+            <p className="company">{exp.company}</p>
+            <p className="dates">{formatDateSafe(exp.startDate)} - {formatDateSafe(exp.endDate)} • {CalculateDuration(exp.startDate, exp.endDate)}</p>
+            <p className="description">{exp.description}</p>
+            <p className="area">{exp.area}</p>
+          </div>
+        </ListGroup.Item>
+      ))
+    ) : (
+      <p>Nessuna esperienza disponibile</p>
+    )}
+    
+  </ListGroup>
+ 
 
       <AddExperienceModal
         show={showAddExperienceModal}
@@ -192,16 +144,6 @@ const Experience = ({ userId, isCurrentUser }) => {
         experience={newExperience}
         onInputChange={(e) => setNewExperience({ ...newExperience, [e.target.name]: e.target.value })}
       />
-
-      {currentExperience && (
-        <EditExperienceModal
-          show={showEditExperienceModal}
-          onClose={closeEditExperienceModal}
-          onSubmit={handleEditExperience}
-          experience={newExperience}
-          onInputChange={(e) => setNewExperience({ ...newExperience, [e.target.name]: e.target.value })}
-        />
-      )}
     </>
   );
 };
