@@ -179,7 +179,7 @@ const ProfileHeader = ({ userId: propUserId }) => {
           <img
             src="https://picsum.photos/640/480"
             alt="Profilo di sfondo"
-            className="header-bg "
+            className="header-bg w-100"
           />
           <div className="avatar-container">
             <img
