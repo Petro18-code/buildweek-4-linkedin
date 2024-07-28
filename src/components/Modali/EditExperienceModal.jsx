@@ -1,7 +1,7 @@
+import React, { useState, useEffect } from 'react';
 import { Modal, Form, Button, Row, Col } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
-import './EditExperienceModal.css';
 import { FaPlus } from 'react-icons/fa';
+import './EditExperienceModal.css';
 
 const employmentTypes = [
   'Tempo pieno',
@@ -19,29 +19,71 @@ const locationTypes = [
   'Altro'
 ];
 
-const EditExperienceModal = ({ show, onClose, onSubmit, onDelete,  experience , onInputChange }) => {
+const EditExperienceModal = ({ show, onClose, onDelete, onSubmit, experience }) => {
+  const [localExperience, setLocalExperience] = useState({
+    role: '',
+    company: '',
+    startMonth: '',
+    startYear: '',
+    endMonth: '',
+    endYear: '',
+    description: '',
+    area: '',
+    employmentType: '',
+    locationType: '',
+    currentlyInRole: false
+  });
 
-  const safeExperience = experience || {};
-  
-  const [selectedStartMonth, setSelectedStartMonth] = useState(safeExperience.startMonth || '');
-  const [selectedStartYear, setSelectedStartYear] = useState(safeExperience.startYear || '');
-  const [selectedEndMonth, setSelectedEndMonth] = useState(safeExperience.endMonth || '');
-  const [selectedEndYear, setSelectedEndYear] = useState(safeExperience.endYear || '');
-
- 
   useEffect(() => {
-    console.log('Experience:', safeExperience);
-  }, [safeExperience]);
-
-
+    if (experience) {
+      setLocalExperience({
+        ...experience,
+        startMonth: experience.startDate ? new Date(experience.startDate).getMonth() + 1 : '',
+        startYear: experience.startDate ? new Date(experience.startDate).getFullYear() : '',
+        endMonth: experience.endDate ? new Date(experience.endDate).getMonth() + 1 : '',
+        endYear: experience.endDate ? new Date(experience.endDate).getFullYear() : ''
+      });
+    } else {
+      setLocalExperience({
+        role: '',
+        company: '',
+        
+        startDate: '',
+        endDate: '',
+       
+        description: '',
+        area: '',
+       
+        
+      });
+    }
+  }, [experience]);
+  const handleDelete = () => {
+    if (onDelete) {
+      onDelete(experience._id);
+    }
+  };
   const handleChange = (e) => {
-    onInputChange(e);
+    const { name, value, type, checked } = e.target;
+    setLocalExperience(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
+  const handleSubmit = () => {
+    onSubmit({
+      ...localExperience,
+      startDate: localExperience.startYear && localExperience.startMonth ? new Date(localExperience.startYear, localExperience.startMonth - 1).toISOString() : '',
+      endDate: localExperience.endYear && localExperience.endMonth ? new Date(localExperience.endYear, localExperience.endMonth - 1).toISOString() : ''
+    });
+    onClose();
   };
 
   return (
     <Modal show={show} onHide={onClose} centered size="lg">
       <Modal.Header closeButton>
-        <Modal.Title>Modifica Esperienza</Modal.Title>
+        <Modal.Title>{experience ? 'Modifica Esperienza' : 'Aggiungi Esperienza'}</Modal.Title>
       </Modal.Header>
       <Modal.Body className="modal-body-scroll">
         <Form>
@@ -51,24 +93,29 @@ const EditExperienceModal = ({ show, onClose, onSubmit, onDelete,  experience , 
               type="text"
               placeholder="Inserisci il ruolo"
               name="role"
-              value={safeExperience.role || ''}
-              onChange={onInputChange}
+              value={localExperience.role || ''}
+              onChange={handleChange}
             />
           </Form.Group>
-          <Form.Group controlId="formShareNetwork" className="mt-3">
+
+          <Form.Group controlId="formCurrentlyInRole" className="mt-3">
             <Form.Check
               type="checkbox"
               label="Attualmente ricoprto questo ruolo"
+              name="currentlyInRole"
+              checked={localExperience.currentlyInRole || false}
+              onChange={handleChange}
             />
           </Form.Group>
+
           <Form.Group controlId="formCompany">
             <Form.Label>Azienda</Form.Label>
             <Form.Control
               type="text"
               placeholder="Inserisci l'azienda"
               name="company"
-              value={safeExperience.company || ''}
-              onChange={onInputChange}
+              value={localExperience.company || ''}
+              onChange={handleChange}
             />
           </Form.Group>
 
@@ -81,11 +128,8 @@ const EditExperienceModal = ({ show, onClose, onSubmit, onDelete,  experience , 
                     <Form.Control
                       as="select"
                       name="startMonth"
-                      value={selectedStartMonth}
-                      onChange={(e) => {
-                        setSelectedStartMonth(e.target.value);
-                        handleChange(e);
-                      }}
+                      value={localExperience.startMonth || ''}
+                      onChange={handleChange}
                     >
                       <option value="">Mese</option>
                       {[...Array(12).keys()].map(i => (
@@ -97,11 +141,8 @@ const EditExperienceModal = ({ show, onClose, onSubmit, onDelete,  experience , 
                     <Form.Control
                       as="select"
                       name="startYear"
-                      value={selectedStartYear}
-                      onChange={(e) => {
-                        setSelectedStartYear(e.target.value);
-                        handleChange(e);
-                      }}
+                      value={localExperience.startYear || ''}
+                      onChange={handleChange}
                     >
                       <option value="">Anno</option>
                       {Array.from({ length: 50 }, (_, i) => new Date().getFullYear() - i).map(year => (
@@ -121,11 +162,8 @@ const EditExperienceModal = ({ show, onClose, onSubmit, onDelete,  experience , 
                     <Form.Control
                       as="select"
                       name="endMonth"
-                      value={selectedEndMonth}
-                      onChange={(e) => {
-                        setSelectedEndMonth(e.target.value);
-                        handleChange(e);
-                      }}
+                      value={localExperience.endMonth || ''}
+                      onChange={handleChange}
                     >
                       <option value="">Mese</option>
                       {[...Array(12).keys()].map(i => (
@@ -137,11 +175,8 @@ const EditExperienceModal = ({ show, onClose, onSubmit, onDelete,  experience , 
                     <Form.Control
                       as="select"
                       name="endYear"
-                      value={selectedEndYear}
-                      onChange={(e) => {
-                        setSelectedEndYear(e.target.value);
-                        handleChange(e);
-                      }}
+                      value={localExperience.endYear || ''}
+                      onChange={handleChange}
                     >
                       <option value="">Anno</option>
                       {Array.from({ length: 50 }, (_, i) => new Date().getFullYear() - i).map(year => (
@@ -160,7 +195,7 @@ const EditExperienceModal = ({ show, onClose, onSubmit, onDelete,  experience , 
               as="textarea"
               rows={3}
               name="description"
-              value={safeExperience.description || ''}
+              value={localExperience.description || ''}
               onChange={handleChange}
             />
           </Form.Group>
@@ -170,7 +205,7 @@ const EditExperienceModal = ({ show, onClose, onSubmit, onDelete,  experience , 
             <Form.Control
               type="text"
               name="area"
-              value={safeExperience.area || ''}
+              value={localExperience.area || ''}
               onChange={handleChange}
             />
           </Form.Group>
@@ -180,7 +215,7 @@ const EditExperienceModal = ({ show, onClose, onSubmit, onDelete,  experience , 
             <Form.Control
               as="select"
               name="employmentType"
-              value={safeExperience.employmentType || ''}
+              value={localExperience.employmentType || ''}
               onChange={handleChange}
             >
               <option value="">Seleziona tipo di impiego</option>
@@ -195,7 +230,7 @@ const EditExperienceModal = ({ show, onClose, onSubmit, onDelete,  experience , 
             <Form.Control
               as="select"
               name="locationType"
-              value={safeExperience.locationType || ''}
+              value={localExperience.locationType || ''}
               onChange={handleChange}
             >
               <option value="">Seleziona tipo di località</option>
@@ -205,23 +240,24 @@ const EditExperienceModal = ({ show, onClose, onSubmit, onDelete,  experience , 
             </Form.Control>
           </Form.Group>
 
+          <div>
+            <h5>Competenze</h5>
+            <p>Ti consigliamo di aggiungere le 5 competenze più utilizzate in questo ruolo. Appariranno anche nella sezione Competenze.</p>
+            <Button><FaPlus /> Aggiungi Competenza</Button>
+          </div>
+
+          <div>
+            <h5>Media</h5>
+            <p>Aggiungi contenuti multimediali come immagini, documenti, siti o presentazioni. Scopri di più sui tipi di file multimediali supportati</p>
+            <Button><FaPlus /> Aggiungi Media</Button>
+          </div>
         </Form>
-        <div>
-          <h5>Competenze</h5>
-          <p>Ti consigliamo di aggiungere le 5 competenze più utilizzate in questo ruolo. Appariranno anche nella sezione Competenze.</p>
-          <Button><FaPlus /> Aggiungi Competenza</Button>
-        </div>
-        <div>
-          <h5>Media</h5>
-          <p>Aggiungi contenuti multimediali come immagini, documenti, siti o presentazioni. Scopri di più sui tipi di file multimediali supportati</p>
-          <Button><FaPlus /> Aggiungi Media</Button>
-        </div>
       </Modal.Body>
       <Modal.Footer className='d-flex justify-content-between'>
-        <Button variant="secondary" onClick={onClose}>
-          Elimina Esperienza
+        <Button variant="secondary"  onClick={handleDelete}>
+         Elimina
         </Button>
-        <Button variant="primary" onClick={onSubmit}>
+        <Button variant="primary" onClick={handleSubmit}>
           Salva
         </Button>
       </Modal.Footer>

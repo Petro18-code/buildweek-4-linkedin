@@ -1,13 +1,13 @@
-import ProfileList from './ProfileList'; 
+import ProfileList from '../ListProfile/ProfileList'; 
 import './SideBar.css';
-
+import { Row, Col } from 'react-bootstrap';
 const Sidebar = ({ currentUserId }) => {
   return (
-    <aside className="sidebar">
-      <div className="profile-list-container">
+  <Row>
+    <Col xs={12} md={12}>
         <ProfileList excludeUserId={currentUserId} />
-      </div>
-    </aside>
+    </Col>
+        </Row>
   );
 };
 

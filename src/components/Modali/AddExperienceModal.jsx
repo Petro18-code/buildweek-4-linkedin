@@ -1,7 +1,6 @@
 import { Modal, Form, Button, Alert, Row, Col } from 'react-bootstrap';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaPlus } from 'react-icons/fa';
-
 
 const months = [
   'Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
@@ -28,31 +27,52 @@ const locationTypes = [
 
 const AddExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInputChange }) => {
   const [localError, setLocalError] = useState('');
-  const [startDateMonth, setStartDateMonth] = useState(experience.startDate ? parseInt(experience.startDate.slice(5, 7), 10) : '');
-  const [startDateYear, setStartDateYear] = useState(experience.startDate ? parseInt(experience.startDate.slice(0, 4), 10) : '');
-  const [endDateMonth, setEndDateMonth] = useState(experience.endDate ? parseInt(experience.endDate.slice(5, 7), 10) : '');
-  const [endDateYear, setEndDateYear] = useState(experience.endDate ? parseInt(experience.endDate.slice(0, 4), 10) : '');
-  const [employmentType, setEmploymentType] = useState(experience.employmentType || '');
-  const [locationType, setLocationType] = useState(experience.locationType || '');
+
+
+  const defaultExperience = {
+    role: '',
+    company: '',
+    startDate: '',
+    endDate: '',
+    description: '',
+    area: '',
+    employmentType: '',
+    locationType: '',
+    currentRole: false
+  };
+
+  const completeExperience = { ...defaultExperience, ...experience };
+
+  const [startDateMonth, setStartDateMonth] = useState(completeExperience.startDate ? parseInt(completeExperience.startDate.slice(5, 7), 10) : '');
+  const [startDateYear, setStartDateYear] = useState(completeExperience.startDate ? parseInt(completeExperience.startDate.slice(0, 4), 10) : '');
+  const [endDateMonth, setEndDateMonth] = useState(completeExperience.endDate ? parseInt(completeExperience.endDate.slice(5, 7), 10) : '');
+  const [endDateYear, setEndDateYear] = useState(completeExperience.endDate ? parseInt(completeExperience.endDate.slice(0, 4), 10) : '');
+  const [employmentType, setEmploymentType] = useState(completeExperience.employmentType);
+  const [locationType, setLocationType] = useState(completeExperience.locationType);
+
+
+  useEffect(() => {
+    if (startDateYear && startDateMonth) {
+      onInputChange({ target: { name: 'startDate', value: `${startDateYear}-${startDateMonth.toString().padStart(2, '0')}` } });
+    }
+    if (endDateYear && endDateMonth) {
+      onInputChange({ target: { name: 'endDate', value: `${endDateYear}-${endDateMonth.toString().padStart(2, '0')}` } });
+    }
+  }, [startDateMonth, startDateYear, endDateMonth, endDateYear, onInputChange]);
+
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    
+    onInputChange({ target: { name, value: type === 'checkbox' ? checked : value } });
+  };
 
   const handleSubmit = () => {
-    
-    if (!experience.role || !experience.company || !experience.startDate) {
-      setLocalError('Il ruolo, il nome dell\'azienda e la data di inizio sono obbligatori.');
+    if (!completeExperience.role || !completeExperience.company || !completeExperience.startDate) {
+      setLocalError("Il ruolo, il nome dell'azienda e la data di inizio sono obbligatori.");
       return;
     }
     setLocalError('');
-    onSubmit();
-  };
-
-  const handleDateChange = (type, month, year) => {
-    const dateString = `${year}-${month.padStart(2, '0')}`;
-    onInputChange({
-      target: {
-        name: type,
-        value: dateString
-      }
-    });
+    onSubmit(completeExperience);
   };
 
   return (
@@ -69,8 +89,8 @@ const AddExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInputC
               type="text"
               placeholder="Inserisci il tuo ruolo"
               name="role"
-              value={experience.role || ''}
-              onChange={onInputChange}
+              value={experience.role || ''}  
+  onChange={onInputChange}     
             />
           </Form.Group>
           <Form.Group controlId="formCompany">
@@ -79,8 +99,8 @@ const AddExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInputC
               type="text"
               placeholder="Nome dell'azienda"
               name="company"
-              value={experience.company || ''}
-              onChange={onInputChange}
+              value={completeExperience.company}
+              onChange={handleInputChange} 
             />
           </Form.Group>
           <Form.Group controlId="formEmploymentType" className="mt-3">
@@ -91,7 +111,7 @@ const AddExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInputC
               value={employmentType}
               onChange={(e) => {
                 setEmploymentType(e.target.value);
-                onInputChange(e);
+                handleInputChange(e);
               }}
             >
               <option value="">Seleziona tipo di impiego</option>
@@ -108,7 +128,7 @@ const AddExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInputC
               value={locationType}
               onChange={(e) => {
                 setLocationType(e.target.value);
-                onInputChange(e);
+                handleInputChange(e);
               }}
             >
               <option value="">Seleziona tipo di località</option>
@@ -126,9 +146,7 @@ const AddExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInputC
                   name="startDateMonth"
                   value={startDateMonth}
                   onChange={(e) => {
-                    const newMonth = e.target.value;
-                    setStartDateMonth(newMonth);
-                    handleDateChange('startDate', newMonth, startDateYear);
+                    setStartDateMonth(e.target.value);
                   }}
                 >
                   <option value="">Mese</option>
@@ -143,9 +161,7 @@ const AddExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInputC
                   name="startDateYear"
                   value={startDateYear}
                   onChange={(e) => {
-                    const newYear = e.target.value;
-                    setStartDateYear(newYear);
-                    handleDateChange('startDate', startDateMonth, newYear);
+                    setStartDateYear(e.target.value);
                   }}
                 >
                   <option value="">Anno</option>
@@ -165,9 +181,7 @@ const AddExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInputC
                   name="endDateMonth"
                   value={endDateMonth}
                   onChange={(e) => {
-                    const newMonth = e.target.value;
-                    setEndDateMonth(newMonth);
-                    handleDateChange('endDate', newMonth, endDateYear);
+                    setEndDateMonth(e.target.value);
                   }}
                 >
                   <option value="">Mese</option>
@@ -182,9 +196,7 @@ const AddExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInputC
                   name="endDateYear"
                   value={endDateYear}
                   onChange={(e) => {
-                    const newYear = e.target.value;
-                    setEndDateYear(newYear);
-                    handleDateChange('endDate', endDateMonth, newYear);
+                    setEndDateYear(e.target.value);
                   }}
                 >
                   <option value="">Anno</option>
@@ -202,8 +214,8 @@ const AddExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInputC
               rows={3}
               placeholder="Descrivi il tuo ruolo e le tue responsabilità"
               name="description"
-              value={experience.description || ''}
-              onChange={onInputChange}
+              value={completeExperience.description}
+              onChange={handleInputChange}
             />
           </Form.Group>
           <Form.Group controlId="formArea" className="mt-3">
@@ -212,14 +224,17 @@ const AddExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInputC
               type="text"
               placeholder="Località del lavoro"
               name="area"
-              value={experience.area || ''}
-              onChange={onInputChange}
+              value={completeExperience.area}
+              onChange={handleInputChange} 
             />
           </Form.Group>
-          <Form.Group controlId="formShareNetwork" className="mt-3">
+          <Form.Group controlId="formCurrentRole" className="mt-3">
             <Form.Check
               type="checkbox"
               label="Attualmente ricopro questo ruolo"
+              name="currentRole"
+              checked={completeExperience.currentRole}
+              onChange={handleInputChange} 
             />
           </Form.Group>
         </Form>
