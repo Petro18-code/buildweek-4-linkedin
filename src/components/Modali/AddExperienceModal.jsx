@@ -52,14 +52,16 @@ const AddExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInputC
 
 
   useEffect(() => {
-    if (startDateYear && startDateMonth) {
-      onInputChange({ target: { name: 'startDate', value: `${startDateYear}-${startDateMonth.toString().padStart(2, '0')}` } });
+    const newStartDate = `${startDateYear}-${startDateMonth.toString().padStart(2, '0')}`;
+    const newEndDate = `${endDateYear}-${endDateMonth.toString().padStart(2, '0')}`;
+    
+    if (startDateYear && startDateMonth && experience.startDate !== newStartDate) {
+      onInputChange({ target: { name: 'startDate', value: newStartDate } });
     }
-    if (endDateYear && endDateMonth) {
-      onInputChange({ target: { name: 'endDate', value: `${endDateYear}-${endDateMonth.toString().padStart(2, '0')}` } });
+    if (endDateYear && endDateMonth && experience.endDate !== newEndDate) {
+      onInputChange({ target: { name: 'endDate', value: newEndDate } });
     }
-  }, [startDateMonth, startDateYear, endDateMonth, endDateYear, onInputChange]);
-
+  }, [startDateMonth, startDateYear, endDateMonth, endDateYear, onInputChange, experience.startDate, experience.endDate]);
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     
@@ -90,7 +92,7 @@ const AddExperienceModal = ({ show, onClose, onSubmit, experience = {}, onInputC
               placeholder="Inserisci il tuo ruolo"
               name="role"
               value={experience.role || ''}  
-  onChange={onInputChange}     
+              onChange={onInputChange}     
             />
           </Form.Group>
           <Form.Group controlId="formCompany">

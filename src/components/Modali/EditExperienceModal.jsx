@@ -46,11 +46,9 @@ const EditExperienceModal = ({ show, onClose, onDelete, onSubmit, experience }) 
     } else {
       setLocalExperience({
         role: '',
-        company: '',
-        
+        company: '',  
         startDate: '',
         endDate: '',
-       
         description: '',
         area: '',
        

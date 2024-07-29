@@ -34,7 +34,7 @@ const Experience = ({ userId, isCurrentUser }) => {
         });
 
         if (!response.ok) {
-          throw new Error(`Error ${response.status}: Unable to fetch experiences`);
+          throw new Error(`Error ${response.status}`);
         }
 
         const data = await response.json();
@@ -97,7 +97,7 @@ const Experience = ({ userId, isCurrentUser }) => {
       });
 
       if (!response.ok) {
-        throw new Error(`Error ${response.status}: Unable to add experience`);
+        throw new Error(`Error ${response.status}`);
       }
 
       const data = await response.json();
